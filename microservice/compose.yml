@@ -11,6 +11,8 @@ services:
     image: frimg
     ports:
       - '5000:5000'
+   depends_on:
+     - "db"
 
   book:
     container_name: book_service
