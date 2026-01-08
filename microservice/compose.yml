@@ -5,12 +5,12 @@ services:
     ports:
       - '3306:3306'
 
-  fr:
-    image: frimg
+  fe:
+    image: feimg
     ports:
       - '5000:5000'
-   depends_on:
-     - "db"
+    depends_on:
+      - "db"
 
   book:
     image: bkimg
