@@ -2,27 +2,36 @@
 services:
   db:
     image: dbimg
+    deploy:
+      replicas: 3
     ports:
       - '3306:3306'
 
-  fe:
-    image: feimg
-    ports:
-      - '5000:5000'
-    depends_on:
-      - "db"
-
   book:
     image: bkimg
+    deploy:
+      replicas: 3
     ports:
       - '5002:5002'
 
   borrow:
     image: brimg
+    deploy:
+      replicas: 3
     ports:
       - '5003:5003'
 
   auth:
     image: auimg
+    deploy:
+      replicas: 3
     ports:
       - '5001:5001'
+  fe:
+    image: feimg
+    deploy:
+      replicas: 3
+    ports:
+      - '5000:5000'
+    depends_on:
+      - "db"
