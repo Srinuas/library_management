@@ -1,0 +1,31 @@
+---
+services:
+  db:
+    container_name: db
+    image: dbimg
+    ports:
+      - '3306:3306'
+
+  fr:
+    container_name: fr
+    image: frimg
+    ports:
+      - '5000:5000'
+
+  book:
+    container_name: book_service
+    image: bkimg
+    ports:
+      - '5002:5002'
+
+  borrow:
+    container_name: borrow_service
+    image: brimg
+    ports:
+      - '5003:5003'
+
+  auth:
+    container_name: auth_service
+    image: auim
+    ports:
+      - '5001:5001'
