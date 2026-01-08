@@ -6,6 +6,13 @@ services:
       replicas: 3
     ports:
       - '3306:3306'
+      
+  auth:
+    image: auimg
+    deploy:
+      replicas: 3
+    ports:
+      - '5001:5001'
 
   book:
     image: bkimg
@@ -13,6 +20,8 @@ services:
       replicas: 3
     ports:
       - '5002:5002'
+    depends_on:
+      - db
 
   borrow:
     image: brimg
@@ -20,13 +29,9 @@ services:
       replicas: 3
     ports:
       - '5003:5003'
+    depends_on:
+      - db
 
-  auth:
-    image: auimg
-    deploy:
-      replicas: 3
-    ports:
-      - '5001:5001'
   fe:
     image: feimg
     deploy:
@@ -35,3 +40,5 @@ services:
       - '5000:5000'
     depends_on:
       - auth
+      - book
+      - borrow
