@@ -1,0 +1,26 @@
+[root@manager ~]# history
+    1  hostnamectl set-hostname manager
+    2  exit
+    3  ll
+    4  cd DigitalLibrary_Docker_monolithic/LibraryManagement
+    5  ll
+    6  yum install python-pip -y
+    7  ll
+    8  pip install -r requirements.txt
+    9  python app.py
+   10  python3 app.py
+   11  ll
+   12  vi app.py
+   13  sudo yum install mariadb105
+   14  mysql -u root -h mydb1.calmuqc02ka3.us-east-1.rds.amazonaws.com -p
+   15  vi app.py
+   16  python3 app.py
+   17  vi app.py
+   18  mysql -u root -h mydb1.calmuqc02ka3.us-east-1.rds.amazonaws.com -p
+   19  python3 app.py
+   20  vi app.py
+   21  python3 app.py
+   22  cd
+   23  cat DigitalLibrary_Docker_monolithic/LibraryManagement/app.py
+   24  history
+[root@manager ~]#
