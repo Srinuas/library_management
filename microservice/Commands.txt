@@ -1,8 +1,6 @@
-Docker Manual commands
-
-cd microservice/
-ll
-docker build -t auim auth/
+Docker Manual commands:
+___________________________
+docker build -t auimg auth/
 docker build -t bkimg book/
 docker build -t brimg borrow/
 docker build -t dbimg database/
@@ -14,14 +12,11 @@ docker run -d --name db --network=srinu dbimg
 docker inspect db
 docker network ls
 docker exec -it db bash
-docker run -d --name auth_service -p 5001:5001 --network srinu auimg
 docker run -d --name auth_service -p 5001:5001 --network=srinu auimg
-docker run -d --name auth_service -p 5001:5001 --network=srinu auim
 docker run -d --name book_service -p 5002:5002 --network=srinu bkimg
 docker run -d --name borrow_service -p 5003:5003 --network srinu brimg
+docker run -d --name frontend -p 5000:5000 --network srinu frimg
 docker ps
-cat app.py
-docker run -d --name f_service -p 5000:5000 --network srinu frimg
 
 docker exec -it db bash
 
@@ -34,3 +29,10 @@ select * from books;
 select * from borrow_records;
 select * from users;
 SELECT u.name AS user_name, u.email, b.title AS book_title, b.author AS book_author, br.borrow_date FROM borrow_records br JOIN users u ON br.user_id = u.id JOIN books b ON br.book_id = b.id;
+________________________________________
+vi compose.yml
+docker-compose up -d
+docker-compose down
+docker-compose up -d
+_______________________________________
+
