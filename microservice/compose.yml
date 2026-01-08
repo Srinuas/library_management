@@ -26,6 +26,6 @@ services:
 
   auth:
     container_name: auth_service
-    image: auim
+    image: auimg
     ports:
       - '5001:5001'
