@@ -13,6 +13,8 @@ services:
       replicas: 3
     ports:
       - '5001:5001'
+    depends_on:
+      - db
 
   book:
     image: bkimg
@@ -42,3 +44,4 @@ services:
       - auth
       - book
       - borrow
+      - db
