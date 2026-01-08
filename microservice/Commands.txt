@@ -1,0 +1,36 @@
+Docker Manual commands
+
+cd microservice/
+ll
+docker build -t auim auth/
+docker build -t bkimg book/
+docker build -t brimg borrow/
+docker build -t dbimg database/
+docker images
+docker build -t frimg .
+docker images
+docker network create srinu
+docker run -d --name db --network=srinu dbimg
+docker inspect db
+docker network ls
+docker exec -it db bash
+docker run -d --name auth_service -p 5001:5001 --network srinu auimg
+docker run -d --name auth_service -p 5001:5001 --network=srinu auimg
+docker run -d --name auth_service -p 5001:5001 --network=srinu auim
+docker run -d --name book_service -p 5002:5002 --network=srinu bkimg
+docker run -d --name borrow_service -p 5003:5003 --network srinu brimg
+docker ps
+cat app.py
+docker run -d --name f_service -p 5000:5000 --network srinu frimg
+
+docker exec -it db bash
+
+mysql -u root -p
+
+show databases;
+use digital_library;
+show tables;
+select * from books;
+select * from borrow_records;
+select * from users;
+SELECT u.name AS user_name, u.email, b.title AS book_title, b.author AS book_author, br.borrow_date FROM borrow_records br JOIN users u ON br.user_id = u.id JOIN books b ON br.book_id = b.id;
