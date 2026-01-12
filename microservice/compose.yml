@@ -19,6 +19,7 @@ services:
       - app-network
     environment:
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db
 
   auth_service:
     image: auimg
