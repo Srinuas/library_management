@@ -7,7 +7,7 @@ services:
     ports:
       - '3306:3306'
       
-  auth:
+  auth_service:
     image: auimg
     deploy:
       replicas: 3
@@ -16,7 +16,7 @@ services:
     depends_on:
       - db
 
-  book:
+  book_service:
     image: bkimg
     deploy:
       replicas: 3
@@ -25,7 +25,7 @@ services:
     depends_on:
       - db
 
-  borrow:
+  borrow_service:
     image: brimg
     deploy:
       replicas: 3
@@ -41,7 +41,4 @@ services:
     ports:
       - '5000:5000'
     depends_on:
-      - auth
-      - book
-      - borrow
       - db
