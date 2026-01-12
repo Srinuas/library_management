@@ -1,44 +1,91 @@
----
+version: '3.8'
+
 services:
   db:
     image: dbimg
     deploy:
-      replicas: 3
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
     ports:
-      - '3306:3306'
-      
+      - target: 3306
+        published: 3306
+        protocol: tcp
+        mode: ingress
+    volumes:
+      - dbvol:/var/lib/mysql
+    networks:
+      - app-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
   auth_service:
     image: auimg
     deploy:
       replicas: 3
     ports:
-      - '5001:5001'
-    depends_on:
-      - db
+      - target: 5001
+        published: 5001
+        protocol: tcp
+        mode: host  # ✅ Each replica gets its own port
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
 
   book_service:
     image: bkimg
     deploy:
       replicas: 3
     ports:
-      - '5002:5002'
-    depends_on:
-      - db
+      - target: 5002
+        published: 5002
+        protocol: tcp
+        mode: host
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
 
   borrow_service:
     image: brimg
     deploy:
       replicas: 3
     ports:
-      - '5003:5003'
-    depends_on:
-      - db
+      - target: 5003
+        published: 5003
+        protocol: tcp
+        mode: host
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
 
   fe:
     image: feimg
     deploy:
       replicas: 3
     ports:
-      - '5000:5000'
-    depends_on:
-      - db
+      - target: 5000
+        published: 5000
+        protocol: tcp
+        mode: host
+    networks:
+      - app-network
+    environment:
+      - AUTH_SERVICE_URL=auth_service:5001
+      - BOOK_SERVICE_URL=book_service:5002
+      - BORROW_SERVICE_URL=borrow_service:5003
+
+volumes:
+  dbvol:
+    driver: local
+
+networks:
+  app-network:
+    driver: overlay
+    attachable: true
