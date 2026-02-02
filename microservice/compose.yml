@@ -35,3 +35,8 @@ services:
       replicas: 3
     ports:
       - "5000:5000"
+
+    depends_on:
+      - auth_service
+      - book_service
+      - borrow_service
