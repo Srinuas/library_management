@@ -1,44 +1,37 @@
 ---
+version: '3'
 services:
   db:
-    image: dbimg
+    image: srinuas/mylib:db
     deploy:
       replicas: 3
     ports:
-      - '3306:3306'
-      
+      - "3306:3306"
+
   auth_service:
-    image: auimg
+    image: srinuas/mylib:au
     deploy:
       replicas: 3
     ports:
-      - '5001:5001'
-    depends_on:
-      - db
-
+      - "5001:5001"
+  
   book_service:
-    image: bkimg
+    image: srinuas/mylib:bk
     deploy:
       replicas: 3
     ports:
-      - '5002:5002'
-    depends_on:
-      - db
-
+      - "5002:5002"
+  
   borrow_service:
-    image: brimg
+    image: srinuas/mylib:br
     deploy:
       replicas: 3
     ports:
-      - '5003:5003'
-    depends_on:
-      - db
-
-  fe:
-    image: feimg
+      - "5003:5003"
+  
+  fe_service:
+    image: srinuas/mylib:fe
     deploy:
       replicas: 3
     ports:
-      - '5000:5000'
-    depends_on:
-      - db
+      - "5000:5000"
