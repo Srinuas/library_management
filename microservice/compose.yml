@@ -29,7 +29,7 @@ services:
     ports:
       - "5003:5003"
   
-  fe_service:
+  app_service:
     image: srinuas/mylib:fe
     deploy:
       replicas: 3
