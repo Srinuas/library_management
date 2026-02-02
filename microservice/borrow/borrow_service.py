@@ -25,6 +25,25 @@ def borrow_book():
     conn.close()
     return jsonify({"message": "Book borrowed"}), 201
 
+# --- NEW: Return Book API ---
+@app.route("/return", methods=["POST"])
+def return_book():
+    try:
+        data = request.json
+        conn = get_db()
+        cursor = conn.cursor()
+        # User ID మరియు Book ID మ్యాచ్ అయితేనే డిలీట్ చేస్తుంది
+        cursor.execute("DELETE FROM borrow_records WHERE user_id=%s AND book_id=%s",
+                       (data["user_id"], data["book_id"]))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({"message": "Book returned successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
 @app.route("/mybooks/<int:user_id>", methods=["GET"])
 def my_books(user_id):
     conn = get_db()
