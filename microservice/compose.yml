@@ -1,10 +1,17 @@
----
 version: '3'
+
 services:
   db:
     image: srinuas/mylib:db
     deploy:
-      replicas: 3
+      replicas: 1
+      restart_policy:
+        condition: on-failure  # కంటైనర్ ఆగిపోతే ఆటోమేటిక్‌గా రీస్టార్ట్ అవుతుంది
+      placement:
+        constraints:
+          - node.role == manager # DB ఎప్పుడూ మేనేజర్ నోడ్‌లోనే రన్ అవ్వాలి (డేటా అక్కడే ఉంటుంది కాబట్టి)
+    volumes:
+      - db_data:/var/lib/mysql  # డేటా పర్మనెంట్‌గా స్టోర్ అవ్వడానికి వాల్యూమ్
     ports:
       - "3306:3306"
 
@@ -14,29 +21,38 @@ services:
       replicas: 3
     ports:
       - "5001:5001"
-  
+    depends_on:
+      - db
+   
   book_service:
     image: srinuas/mylib:bk
     deploy:
       replicas: 3
     ports:
       - "5002:5002"
-  
+    depends_on:
+      - db
+   
   borrow_service:
     image: srinuas/mylib:br
     deploy:
       replicas: 3
     ports:
       - "5003:5003"
-  
+    depends_on:
+      - db
+   
   app_service:
     image: srinuas/mylib:fe
     deploy:
       replicas: 3
     ports:
       - "5000:5000"
-
     depends_on:
       - auth_service
       - book_service
       - borrow_service
+
+# వాల్యూమ్ డిక్లరేషన్
+volumes:
+  db_data:
