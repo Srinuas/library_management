@@ -40,5 +40,36 @@ def my_books(user_id):
     conn.close()
     return jsonify(books)
 
+# borrow_service.py లో ఈ మార్పులు చేయండి
+
+@app.route("/return", methods=["POST"])
+def return_book():
+    data = request.json
+    conn = get_db()
+    cursor = conn.cursor()
+    # User ID మరియు Book ID ఆధారంగా రికార్డ్ ని డిలీట్ చేస్తున్నాం
+    cursor.execute("DELETE FROM borrow_records WHERE user_id=%s AND book_id=%s", 
+                   (data["user_id"], data["book_id"]))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"message": "Book returned successfully"}), 200
+
+@app.route("/mybooks/<int:user_id>", methods=["GET"])
+def my_books(user_id):
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+    # గమనిక: ఇక్కడ 'b.id' ని సెలెక్ట్ లిస్ట్ లో కొత్తగా యాడ్ చేశాను
+    cursor.execute("""
+        SELECT b.id as book_id, b.title, b.author, br.borrow_date 
+        FROM borrow_records br
+        JOIN books b ON br.book_id = b.id
+        WHERE br.user_id=%s
+    """, (user_id,))
+    books = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return jsonify(books)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5003, debug=True)
